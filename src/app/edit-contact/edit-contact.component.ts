@@ -6,9 +6,11 @@ import { Contact, addressTypeValues, phoneTypeValues } from '../contacts/contact
 import { ContactsService } from '../contacts/contacts.service';
 import { Subscription } from 'rxjs';
 import { RestrictedWordValidator } from '../validators/restricted-words-validator-directive';
+import { DateValueAccessorDirective } from '../date-value-accessor/date-value-accessor.directive';
+import { ProfileIconSelectorComponent } from '../profile-icon-selector/profile-icon-selector.component';
 
 @Component({
-  imports: [CommonModule, FormsModule, RestrictedWordValidator],
+  imports: [CommonModule, FormsModule, RestrictedWordValidator, DateValueAccessorDirective, ProfileIconSelectorComponent],
   standalone: true,
   templateUrl: './edit-contact.component.html',
   styleUrls: ['./edit-contact.component.css']
@@ -16,15 +18,18 @@ import { RestrictedWordValidator } from '../validators/restricted-words-validato
 export class EditContactComponent implements OnInit, OnDestroy {
   contact: Contact = {
     id: '',
+    icon: '',
     personal: false,
     firstName: '',
     lastName: '',
-    dateOfBirth: '',
+    dateOfBirth: null,
     favoritesRanking: 0,
-    phone: {
-      phoneNumber: '',
-      phoneType: '',
-    },
+    phones: [
+      {
+        phoneNumber: '',
+        phoneType: '',
+      }
+    ],
     address: {
       streetAddress: '',
       city: '',
@@ -62,8 +67,15 @@ export class EditContactComponent implements OnInit, OnDestroy {
     console.log(form.value);
     console.log(this.contact.personal, typeof this.contact.personal);
 
-    this.contactsService.saveContact(form.value).subscribe({
+    this.contactsService.saveContact(this.contact).subscribe({
       next: () => this.router.navigate(['/contacts'])
+    });
+  }
+
+  addPhone(){
+    this.contact.phones.push({
+      phoneNumber: '',
+      phoneType: '',
     });
   }
 }
