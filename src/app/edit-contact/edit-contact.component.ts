@@ -5,9 +5,10 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Contact, addressTypeValues, phoneTypeValues } from '../contacts/contact.model';
 import { ContactsService } from '../contacts/contacts.service';
 import { Subscription } from 'rxjs';
+import { RestrictedWordValidator } from '../validators/restricted-words-validator-directive';
 
 @Component({
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RestrictedWordValidator],
   standalone: true,
   templateUrl: './edit-contact.component.html',
   styleUrls: ['./edit-contact.component.css']
